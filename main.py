@@ -4,6 +4,8 @@ import tkinter as tk
 from PIL import ImageTk, Image
 from ttkbootstrap import Style
 import tkinter.ttk as ttk
+from tkinter import filedialog
+from reportlab.pdfgen import canvas
 
 root = tk.Tk()
 root.title("QR Code Generator")
@@ -26,7 +28,22 @@ def generate_qr_code():
     img = img.resize((300, 300))
     img_tk = ImageTk.PhotoImage(img)
     qr_label.configure(image=img_tk)
-    qr.label.img = img_tk
+    qr_label.img = img_tk
+
+
+def print_qr_as_pdf():
+    # Get the generated QR code image
+    img = qrcode.make(text_entry.get())
+    img = img.resize((300, 300))
+
+    # Ask the user for a file path to save the PDF
+    file_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
+
+    if file_path:
+        # Create a PDF and add the QR code image
+        pdf = canvas.Canvas(file_path)
+        pdf.drawInlineImage(img, 100, 500)  # Adjust the position as needed
+        pdf.save()
 
 
 # Create a text input field for the text
@@ -39,6 +56,11 @@ text_entry.pack()
 generate_button = ttk.Button(master=root, text="Generate QR Code",
                              command=generate_qr_code, style='sucesss.TButton')
 generate_button.pack(pady=10)
+
+# Create a button to print the QR Code as PDF
+pdf_button = ttk.Button(master=root, text="Print QR as PDF",
+                        command=print_qr_as_pdf, style='success.TButton')
+pdf_button.pack(pady=10)
 
 # Create label to display the QR code
 qr_label = ttk.Label(master=root)
