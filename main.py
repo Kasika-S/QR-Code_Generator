@@ -30,6 +30,9 @@ def generate_qr_code():
     qr_label.configure(image=img_tk)
     qr_label.img = img_tk
 
+    # Enable the "Print QR as PDF" button
+    pdf_button.config(state="normal")
+
 
 def print_qr_as_pdf():
     # Get the generated QR code image
@@ -57,9 +60,9 @@ generate_button = ttk.Button(master=root, text="Generate QR Code",
                              command=generate_qr_code, style='sucesss.TButton')
 generate_button.pack(pady=10)
 
-# Create a button to print the QR Code as PDF
+# Create a button to print the QR Code as PDF (initially disabled)
 pdf_button = ttk.Button(master=root, text="Print QR as PDF",
-                        command=print_qr_as_pdf, style='success.TButton')
+                        command=print_qr_as_pdf, style='success.TButton', state="disabled")
 pdf_button.pack(pady=10)
 
 # Create label to display the QR code
